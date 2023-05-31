@@ -1,5 +1,7 @@
+import postsReducer from 'pages/posts/store/slice';
+
 const createRootReducer = () => {
-  return {};
+  return { postsReducer };
 };
 
 export default createRootReducer;
