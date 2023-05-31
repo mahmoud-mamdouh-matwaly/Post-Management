@@ -25,4 +25,4 @@ jobs:
         run: yarn
 
       - name: Linting
-        run: yarn run lint
+        run: yarn run lint:check
