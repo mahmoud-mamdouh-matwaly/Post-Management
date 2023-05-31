@@ -4,6 +4,7 @@
   "private": true,
   "description": "Post Management System",
   "repository": "https://github.com/mahmoud-mamdouh-matwaly/Post-Management",
+  "homepage": "https://mahmoud-mamdouh-matwaly.github.io/Post-Management",
   "contributors": [
     {
       "name": "Mahmoud Mamdouh <mahmoud-mamdouh-matwaly>",
@@ -34,7 +35,8 @@
     "lint:fix": "eslint --fix --ext .js --ext .jsx .",
     "prettier": "prettier --ignore-path .gitignore   \"**/*.js\"",
     "format": "yarn run prettier -- --write",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -63,6 +65,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^5.0.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8"
