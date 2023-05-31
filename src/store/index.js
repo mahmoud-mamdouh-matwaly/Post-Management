@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import saga from './root-saga';
-import createRootReducer from './root-reducers';
+import saga from './rootSaga';
+import createRootReducer from './rootReducer';
 import sagaMiddleware, { runSaga } from './middlewares/sagaMiddleware';
 
 let _lastTask;

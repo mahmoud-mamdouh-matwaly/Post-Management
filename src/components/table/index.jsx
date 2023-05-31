@@ -5,6 +5,8 @@ const BaseTable = props => {
   const {
     columns,
     data,
+    getCurrentPage,
+    handleClickRow,
     totalCount,
     rowKey,
     scrollX = 1024,
@@ -16,11 +18,27 @@ const BaseTable = props => {
     ...rest
   } = props;
 
+  const onChange = pagination => {
+    const { current, pageSize } = pagination;
+    getCurrentPage({ current, pageSize });
+  };
+
+  const handleRow = record => {
+    return {
+      onClick: event => {
+        event.stopPropagation();
+        handleClickRow(record);
+      },
+    };
+  };
+
   return (
     <>
       <Table
         columns={columns}
         dataSource={data}
+        onChange={onChange}
+        onRow={handleRow}
         rowKey={rowKey}
         scroll={{
           x: scrollX,
