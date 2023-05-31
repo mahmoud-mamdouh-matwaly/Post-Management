@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "description": "Post Management System",
-  "repository": "https://github.com/mahmoud-mamdouh-matwaly/Post-Management",
-  "homepage": "https://mahmoud-mamdouh-matwaly.github.io/Post-Management",
+  "repository": "https://github.com/mahmoud-mamdouh-matwaly/posts-management",
+  "homepage": "https://mahmoud-mamdouh-matwaly.github.io/posts-management",
   "contributors": [
     {
       "name": "Mahmoud Mamdouh <mahmoud-mamdouh-matwaly>",
