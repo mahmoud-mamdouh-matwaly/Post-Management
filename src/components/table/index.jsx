@@ -2,7 +2,12 @@ import { Table } from 'antd';
 import PropTypes from 'prop-types';
 
 const BaseTable = props => {
-  const { columns, data, rowKey, scrollX = 1024, loading, ...rest } = props;
+  const { columns, data, rowKey, scrollX = 1024, loading, getCurrentPage, currentPage, ...rest } = props;
+
+  const onChange = pagination => {
+    const { current } = pagination;
+    getCurrentPage(current);
+  };
 
   return (
     <>
@@ -10,6 +15,7 @@ const BaseTable = props => {
         columns={columns}
         dataSource={data}
         rowKey={rowKey}
+        onChange={onChange}
         scroll={{
           x: scrollX,
         }}
@@ -17,6 +23,7 @@ const BaseTable = props => {
           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
           defaultPageSize: 10,
           defaultCurrent: 1,
+          current: currentPage,
         }}
         loading={loading}
         {...rest}
@@ -31,5 +38,7 @@ BaseTable.propTypes = {
   data: PropTypes.array.isRequired,
   rowKey: PropTypes.string,
   loading: PropTypes.bool,
-  scrollX: PropTypes.any,
+  scrollX: PropTypes.number,
+  getCurrentPage: PropTypes.func,
+  currentPage: PropTypes.number,
 };

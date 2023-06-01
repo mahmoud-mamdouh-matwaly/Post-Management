@@ -42,7 +42,7 @@ const BaseInput = props => {
         prefix={prefix}
         type={inputType}
         suffix={suffix}
-        style={{ height: '40px', textTransform: 'capitalize' }}
+        style={{ height: '40px' }}
       />
     </Form.Item>
   );
