@@ -17,7 +17,7 @@ function getItem(label, key, icon, children) {
 
 const items = [
   getItem(
-    <NavLink to="/">
+    <NavLink to="/posts-management">
       <span>Posts</span>
     </NavLink>,
     'Posts',
