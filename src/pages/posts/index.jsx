@@ -1,14 +1,13 @@
-import { useEffect, Suspense, lazy } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Spin, Row, Col, Typography, Space, theme } from 'antd';
-import { DeleteFilled, EditFilled } from '@ant-design/icons';
+import { useEffect, Suspense, lazy, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { DeleteFilled, EditFilled } from '@ant-design/icons';
+import { Spin, Row, Col, Typography, Space, theme } from 'antd';
 
-import { fetchPosts } from './store/slice';
+import { fetchPosts, setPostItem, restActionStatus, setCurrentPage } from './store/slice';
 import { columns } from './columns';
 import BaseButton from 'components/button';
 import BaseMessage from 'components/message';
-
 const BaseTable = lazy(() => import('components/table'));
 
 const { Title } = Typography;
@@ -16,8 +15,7 @@ const { useToken } = theme;
 
 const PostsPage = () => {
   const navigate = useNavigate();
-
-  const { data, isLoading, error } = useSelector(state => state.postsReducer);
+  const { data, isLoading, error, currentPage } = useSelector(state => state.postsReducer);
   const dispatch = useDispatch();
 
   const {
@@ -36,7 +34,10 @@ const PostsPage = () => {
             className="btn"
             type="text"
             icon={<EditFilled />}
-            onClick={() => navigate(`/posts-management/edit-post/${row.id}`)}
+            onClick={() => {
+              dispatch(setPostItem(row));
+              navigate(`/posts-management/post-details/${row.id}`);
+            }}
           />
           <BaseButton className="btn" type="text" icon={<DeleteFilled />} danger onClick={() => console.log(row)} />
         </Row>
@@ -45,7 +46,16 @@ const PostsPage = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchPosts());
+    if (!data?.length) {
+      dispatch(fetchPosts());
+    }
+    return () => {
+      dispatch(restActionStatus());
+    };
+  }, [data]);
+
+  const handleCurrentPage = useCallback(current => {
+    dispatch(setCurrentPage(current));
   }, []);
 
   return (
@@ -59,7 +69,14 @@ const PostsPage = () => {
       </Row>
 
       <Suspense fallback={<Spin />}>
-        <BaseTable data={data} columns={[...columns, { ...columnActions }]} loading={isLoading} rowKey="id" />
+        <BaseTable
+          data={data}
+          columns={[...columns, { ...columnActions }]}
+          loading={isLoading}
+          getCurrentPage={handleCurrentPage}
+          currentPage={currentPage}
+          rowKey="id"
+        />
       </Suspense>
       {error ? <BaseMessage /> : null}
     </Space>
