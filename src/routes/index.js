@@ -8,7 +8,7 @@ const BaseLayOut = lazy(() => import('layout'));
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: 'posts-management',
     parent: true,
     element: (
       <Suspense
@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: 'posts-management',
+        path: '/posts-management',
         element: (
           <Suspense
             fallback={
@@ -37,7 +37,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'posts-management/post-details/:id',
+        path: '/posts-management/post-details/:id',
         element: (
           <Suspense
             fallback={
