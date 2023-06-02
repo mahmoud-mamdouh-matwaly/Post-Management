@@ -4,10 +4,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isLoading: false,
   data: [],
-  error: false,
   postItem: null,
-  actionStatus: 'idle',
   currentPage: 1,
+  searchTerm: '',
 };
 
 const postsSlice = createSlice({
@@ -24,7 +23,6 @@ const postsSlice = createSlice({
     },
     fetchPostsFailed: state => {
       state.isLoading = false;
-      state.error = true;
     },
 
     setPostItem: (state, action) => {
@@ -41,7 +39,6 @@ const postsSlice = createSlice({
     },
     fetchPostItemFailed: state => {
       state.isLoading = false;
-      state.error = true;
     },
 
     updatePostItem: state => {
@@ -51,17 +48,16 @@ const postsSlice = createSlice({
     updatePostItemSuccess: (state, action) => {
       state.data = state.data.map(post => (post?.id === action.payload?.id ? action.payload : post));
       state.isLoading = false;
-      state.actionStatus = 'success';
     },
     updatePostItemFailed: state => {
       state.isLoading = false;
-      state.error = true;
     },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
-    restActionStatus: state => {
-      state.actionStatus = 'idle';
+    setSearchTerm: state => state,
+    setSearchTermSuccess: (state, action) => {
+      state.searchTerm = action.payload;
     },
   },
 });
@@ -79,8 +75,9 @@ export const {
   updatePostItem,
   updatePostItemSuccess,
   updatePostItemFailed,
-  restActionStatus,
   setCurrentPage,
+  setSearchTerm,
+  setSearchTermSuccess,
 } = actions;
 
 export default reducer;
