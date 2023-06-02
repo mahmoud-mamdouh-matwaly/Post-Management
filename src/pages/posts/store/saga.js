@@ -14,9 +14,17 @@ import {
   updatePostItemFailed,
   setSearchTerm,
   setSearchTermSuccess,
+  deletePostItem,
+  deletePostItemSuccess,
+  deletePostItemFailed,
 } from './slice';
 
-import { getPostsRequest, getPostItemRequest, getUpdatePostItemRequest } from 'services/request-creators/posts';
+import {
+  getPostsRequest,
+  getPostItemRequest,
+  getUpdatePostItemRequest,
+  getDeletePostItemRequest,
+} from 'services/request-creators/posts';
 
 function* handlePostsListRequests() {
   try {
@@ -61,9 +69,26 @@ function* handleSearchPosts(action) {
   yield delay(500);
   yield put(setSearchTermSuccess(action.payload));
 }
+
+function* handleDeletePostItemRequests(action) {
+  const { id } = action.payload;
+  try {
+    yield call(execute, getDeletePostItemRequest({ id }));
+
+    yield showAlert({
+      message: 'This operation is Successfully',
+      type: 'success',
+    });
+    yield put(deletePostItemSuccess(id));
+  } catch (error) {
+    yield put(deletePostItemFailed());
+    yield showError(error);
+  }
+}
 export function* watchPostsListPageRequests() {
   yield takeLatest(fetchPosts.type, handlePostsListRequests);
   yield takeLatest(fetchPostItem.type, handlePostItemRequests);
   yield takeLatest(updatePostItem.type, handleUpdatePostItemRequests);
   yield takeLatest(setSearchTerm.type, handleSearchPosts);
+  yield takeLatest(deletePostItem.type, handleDeletePostItemRequests);
 }

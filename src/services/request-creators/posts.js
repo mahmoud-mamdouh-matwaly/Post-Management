@@ -21,3 +21,10 @@ export const getUpdatePostItemRequest = ({ id, values }) => {
     body: values,
   };
 };
+
+export const getDeletePostItemRequest = ({ id }) => {
+  return {
+    url: `${BASE_URL}posts/${id}`,
+    method: 'DELETE',
+  };
+};
