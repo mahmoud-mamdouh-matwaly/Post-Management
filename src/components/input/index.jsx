@@ -1,4 +1,5 @@
 import { Input, Form } from 'antd';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 
 const BaseInput = props => {
@@ -48,7 +49,7 @@ const BaseInput = props => {
   );
 };
 
-export default BaseInput;
+export default memo(BaseInput);
 
 BaseInput.propTypes = {
   placeholder: PropTypes.string.isRequired,
