@@ -1,6 +1,6 @@
 import { useEffect, memo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Col, Row, Input } from 'antd';
+import { Form, Col, Row, Input, Space } from 'antd';
 import BaseButton from 'components/button';
 import BaseInput from 'components/input';
 const { TextArea } = Input;
@@ -8,7 +8,7 @@ const { TextArea } = Input;
 const PostForm = props => {
   const [form] = Form.useForm();
   const [disabled, setDisabled] = useState(true);
-  const { postItem, handleSubmit = () => {} } = props;
+  const { postItem, handleSubmit = () => {}, isView = false } = props;
 
   useEffect(() => {
     if (postItem) {
@@ -38,12 +38,12 @@ const PostForm = props => {
   }, []);
 
   return (
-    <Form form={form} name="form" layout="vertical" onFinish={onFinish} onFieldsChange={onFieldsChange}>
-      <Row gutter={[10, 10]} wrap={true}>
-        <Col span={12}>
-          <BaseInput placeholder="title" name="title" label="Title" message="Title is required" />
+    <Form form={form} name="form" layout={'vertical'} onFinish={onFinish} onFieldsChange={onFieldsChange}>
+      <Space.Compact direction={isView ? 'vertical' : 'horizontal'} block>
+        <Col flex={'0 1 100%'} style={{ marginInline: 5 }}>
+          <BaseInput placeholder="title" name="title" label="Title" message="Title is required" disabled={isView} />
         </Col>
-        <Col span={12}>
+        <Col flex={'0 1 100%'} style={{ marginInline: 5 }}>
           <Form.Item
             name="body"
             label="Descriptions"
@@ -54,13 +54,15 @@ const PostForm = props => {
               },
             ]}
           >
-            <TextArea rows={4} />
+            <TextArea rows={4} disabled={isView} />
           </Form.Item>
         </Col>
-      </Row>
-      <Row gutter={[10, 10]} align={'end'}>
-        <BaseButton type="primary" htmlType="submit" text="Submit" isDisabled={disabled} />
-      </Row>
+      </Space.Compact>
+      {!isView ? (
+        <Row gutter={[10, 10]} align={'end'}>
+          <BaseButton type="primary" htmlType="submit" text="Submit" isDisabled={disabled} />
+        </Row>
+      ) : null}
     </Form>
   );
 };
@@ -70,4 +72,5 @@ export default memo(PostForm);
 PostForm.propTypes = {
   handleSubmit: PropTypes.func,
   postItem: PropTypes.object,
+  isView: PropTypes.bool,
 };

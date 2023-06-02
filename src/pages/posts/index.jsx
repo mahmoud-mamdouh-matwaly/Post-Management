@@ -1,7 +1,7 @@
 import { useEffect, Suspense, lazy, useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { DeleteFilled, EditFilled } from '@ant-design/icons';
+import { DeleteFilled, EditFilled, EyeFilled } from '@ant-design/icons';
 import { Spin, Row, Space, theme, Typography } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -22,6 +22,7 @@ import BaseButton from 'components/button';
 import BaseMessage from 'components/message';
 import PageHeading from './components/page-heading';
 import BaseModal from 'components/modal';
+import Form from './components/form';
 const { Text } = Typography;
 
 const BaseTable = lazy(() => import('components/table'));
@@ -55,16 +56,25 @@ const PostsPage = () => {
       };
     });
   }, []);
-
+  const handleClickView = useCallback(item => {
+    setShowModal(prev => {
+      return {
+        isOpen: !prev.isOpen,
+        id: item?.id,
+        item: item,
+      };
+    });
+  }, []);
   const memoColumns = useMemo(() => {
     const columnActions = {
       title: 'Action',
       key: 'operation',
       fixed: 'right',
-      width: 120,
+      width: 150,
       render: row => {
         return (
           <Row justify={'space-between'}>
+            <BaseButton className="btn" type="text" icon={<EyeFilled />} onClick={() => handleClickView(row)} />
             <BaseButton className="btn" type="text" icon={<EditFilled />} onClick={() => handleClickEdit(row)} />
             <BaseButton className="btn" type="text" icon={<DeleteFilled />} danger onClick={() => handleDelete(row)} />
           </Row>
@@ -160,6 +170,15 @@ function ModalsContainer(props) {
         danger={true}
       >
         <Text>Are you sure, you want to delete this post?</Text>
+      </BaseModal>
+
+      <BaseModal
+        handleCancel={handleCancel}
+        handleSubmit={handleSubmit}
+        isModalOpen={showModal.isOpen && !!showModal.item}
+        isLoading={isLoading}
+      >
+        <Form postItem={showModal?.item} isView={true} />
       </BaseModal>
     </>
   );
