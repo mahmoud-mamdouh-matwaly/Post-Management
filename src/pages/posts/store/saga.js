@@ -1,6 +1,6 @@
-import { takeLatest, put, call } from 'redux-saga/effects';
+import { takeLatest, put, call, delay } from 'redux-saga/effects';
 import { execute } from 'services';
-import { showError } from 'utils/utility-sagas';
+import { showError, showAlert } from 'utils/utility-sagas';
 
 import {
   fetchPosts,
@@ -12,6 +12,8 @@ import {
   updatePostItem,
   updatePostItemSuccess,
   updatePostItemFailed,
+  setSearchTerm,
+  setSearchTermSuccess,
 } from './slice';
 
 import { getPostsRequest, getPostItemRequest, getUpdatePostItemRequest } from 'services/request-creators/posts';
@@ -45,13 +47,23 @@ function* handleUpdatePostItemRequests(action) {
     const { data } = yield call(execute, getUpdatePostItemRequest({ id, values }));
 
     yield put(updatePostItemSuccess(data));
+    yield showAlert({
+      message: 'This operation is Successfully',
+      type: 'success',
+    });
   } catch (error) {
     yield put(updatePostItemFailed());
     yield showError(error);
   }
 }
+
+function* handleSearchPosts(action) {
+  yield delay(500);
+  yield put(setSearchTermSuccess(action.payload));
+}
 export function* watchPostsListPageRequests() {
   yield takeLatest(fetchPosts.type, handlePostsListRequests);
   yield takeLatest(fetchPostItem.type, handlePostItemRequests);
   yield takeLatest(updatePostItem.type, handleUpdatePostItemRequests);
+  yield takeLatest(setSearchTerm.type, handleSearchPosts);
 }
