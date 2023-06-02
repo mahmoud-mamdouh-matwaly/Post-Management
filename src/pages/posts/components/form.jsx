@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, memo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col, Row, Input } from 'antd';
 import BaseButton from 'components/button';
@@ -7,6 +7,7 @@ const { TextArea } = Input;
 
 const PostForm = props => {
   const [form] = Form.useForm();
+  const [disabled, setDisabled] = useState(true);
   const { postItem, handleSubmit = () => {} } = props;
 
   useEffect(() => {
@@ -15,7 +16,11 @@ const PostForm = props => {
     }
   }, [postItem]);
 
-  const onFinish = () => {
+  const onFieldsChange = useCallback(() => {
+    setDisabled(false);
+  }, []);
+
+  const onFinish = useCallback(() => {
     form
       .validateFields()
       .then(values => {
@@ -30,10 +35,10 @@ const PostForm = props => {
         });
         if (errors.length) return;
       });
-  };
+  }, []);
 
   return (
-    <Form form={form} name="form" layout="vertical" onFinish={onFinish}>
+    <Form form={form} name="form" layout="vertical" onFinish={onFinish} onFieldsChange={onFieldsChange}>
       <Row gutter={[10, 10]} wrap={true}>
         <Col span={12}>
           <BaseInput placeholder="title" name="title" label="Title" message="Title is required" />
@@ -54,13 +59,13 @@ const PostForm = props => {
         </Col>
       </Row>
       <Row gutter={[10, 10]} align={'end'}>
-        <BaseButton type="primary" htmlType="submit" text="Submit" />
+        <BaseButton type="primary" htmlType="submit" text="Submit" isDisabled={disabled} />
       </Row>
     </Form>
   );
 };
 
-export default PostForm;
+export default memo(PostForm);
 
 PostForm.propTypes = {
   handleSubmit: PropTypes.func,

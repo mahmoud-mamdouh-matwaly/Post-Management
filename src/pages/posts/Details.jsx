@@ -1,19 +1,27 @@
-import { Suspense, lazy, useEffect, useCallback } from 'react';
+import { useEffect, useCallback, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Spin, Row, Col, Typography, Space, message } from 'antd';
+import { Row, Spin, Space, theme } from 'antd';
 import { fetchPostItem, updatePostItem } from './store/slice';
 import BaseMessage from 'components/message';
+import PageHeading from './components/page-heading';
+
 const Form = lazy(() => import('./components/form'));
 
-const { Title } = Typography;
+const { useToken } = theme;
 
 const PostDetails = () => {
   const { id } = useParams();
-  const { postItem, isLoading, error, actionStatus } = useSelector(state => state.postsReducer);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    token: { colorBgContainer },
+  } = useToken();
+
+  const { postItem, isLoading } = useSelector(state => state.postsReducer);
+  const {
+    alert: { type },
+  } = useSelector(state => state.uiReducer);
 
   useEffect(() => {
     if (!postItem) {
@@ -22,38 +30,32 @@ const PostDetails = () => {
   }, [postItem]);
 
   useEffect(() => {
-    if (actionStatus === 'success') {
-      message.success('This operation is Successfully');
+    if (type === 'success') {
       navigate(-1);
     }
-  }, [actionStatus]);
+  }, [type]);
 
-  const handleSubmit = useCallback(values => {
-    dispatch(updatePostItem({ id, values }));
-  }, []);
-
-  return (
-    <Row style={{ padding: '0 24px 24px', margin: '10px 24px', backgroundColor: '#fff', flexDirection: 'column' }}>
-      <Row align={'middle'} justify="space-between" style={{ height: '62px' }}>
-        <Col>
-          <Space>
-            <ArrowLeftOutlined onClick={() => navigate(-1)} />
-            <Title level={4} style={{ marginBlockEnd: 0 }}>
-              Post Details
-            </Title>
-          </Space>
-        </Col>
+  const handleSubmit = useCallback(
+    values => {
+      dispatch(updatePostItem({ id, values }));
+    },
+    [dispatch]
+  );
+  if (isLoading) {
+    return (
+      <Row align={'middle'} justify="center">
+        <Spin />
       </Row>
-      {isLoading ? (
-        <Row align={'middle'} justify="center">
-          <Spin />
-        </Row>
-      ) : null}
+    );
+  }
+  return (
+    <Space direction="vertical" style={{ background: colorBgContainer, width: '100%', padding: '0 15px 15px' }}>
+      <PageHeading title="Post Details" hasBack={true} />
       <Suspense fallback={<Spin />}>
         <Form postItem={postItem} handleSubmit={handleSubmit} />
       </Suspense>
-      {error ? <BaseMessage /> : null}
-    </Row>
+      {type ? <BaseMessage /> : null}
+    </Space>
   );
 };
 
