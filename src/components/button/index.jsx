@@ -1,4 +1,5 @@
 import { Button } from 'antd';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 
 const BaseButton = props => {
@@ -11,7 +12,7 @@ const BaseButton = props => {
   );
 };
 
-export default BaseButton;
+export default memo(BaseButton);
 
 BaseButton.propTypes = {
   text: PropTypes.string,

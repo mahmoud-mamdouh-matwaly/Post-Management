@@ -26,7 +26,7 @@ const postsSlice = createSlice({
     },
 
     setPostItem: (state, action) => {
-      state.postItem = action.payload;
+      state.postItem = { ...action.payload };
     },
 
     fetchPostItem: state => {
