@@ -59,6 +59,18 @@ const postsSlice = createSlice({
     setSearchTermSuccess: (state, action) => {
       state.searchTerm = action.payload;
     },
+
+    deletePostItem: state => {
+      state.isLoading = true;
+      return state;
+    },
+    deletePostItemSuccess: (state, action) => {
+      state.data = state.data?.filter(post => post.id !== action.payload);
+      state.isLoading = false;
+    },
+    deletePostItemFailed: state => {
+      state.isLoading = false;
+    },
   },
 });
 
@@ -78,6 +90,9 @@ export const {
   setCurrentPage,
   setSearchTerm,
   setSearchTermSuccess,
+  deletePostItem,
+  deletePostItemSuccess,
+  deletePostItemFailed,
 } = actions;
 
 export default reducer;
