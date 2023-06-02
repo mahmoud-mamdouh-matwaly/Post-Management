@@ -5,6 +5,7 @@ import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { Spin, Row, Space, theme, Typography } from 'antd';
 import PropTypes from 'prop-types';
 
+<<<<<<< HEAD
 import {
   fetchPosts,
   setPostItem,
@@ -13,6 +14,9 @@ import {
   deletePostItem,
   resetDeleteStatus,
 } from './store/slice';
+=======
+import { fetchPosts, setPostItem, setCurrentPage, setSearchTerm, deletePostItem } from './store/slice';
+>>>>>>> b90488a (feat: add delete post)
 import { columns } from './columns';
 import BaseButton from 'components/button';
 import BaseMessage from 'components/message';
