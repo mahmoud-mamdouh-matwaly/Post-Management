@@ -5,7 +5,14 @@ import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { Spin, Row, Space, theme, Typography } from 'antd';
 import PropTypes from 'prop-types';
 
-import { fetchPosts, setPostItem, setCurrentPage, setSearchTerm, deletePostItem } from './store/slice';
+import {
+  fetchPosts,
+  setPostItem,
+  setCurrentPage,
+  setSearchTerm,
+  deletePostItem,
+  resetDeleteStatus,
+} from './store/slice';
 import { columns } from './columns';
 import BaseButton from 'components/button';
 import BaseMessage from 'components/message';
@@ -19,7 +26,7 @@ const { useToken } = theme;
 
 const PostsPage = () => {
   const navigate = useNavigate();
-  const { data, isLoading, currentPage, searchTerm } = useSelector(state => state.postsReducer);
+  const { data, isLoading, currentPage, searchTerm, deleteStatus } = useSelector(state => state.postsReducer);
   const {
     alert: { type },
   } = useSelector(state => state.uiReducer);
@@ -88,18 +95,20 @@ const PostsPage = () => {
   };
 
   const handleCancel = () => {
-    setShowModal(prev => {
-      return {
-        isOpen: !prev.isOpen,
-        id: null,
-        item: null,
-      };
+    console.log('object');
+    setShowModal({
+      isOpen: false,
+      id: null,
+      item: null,
     });
   };
 
   useEffect(() => {
-    if (type) handleCancel();
-  }, [type]);
+    if (deleteStatus === 'success') {
+      handleCancel();
+      dispatch(resetDeleteStatus());
+    }
+  }, [deleteStatus]);
 
   const filteredPosts = useMemo(() => {
     return data.filter(post => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
