@@ -105,7 +105,6 @@ const PostsPage = () => {
   };
 
   const handleCancel = () => {
-    console.log('object');
     setShowModal({
       isOpen: false,
       id: null,
