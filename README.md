@@ -49,7 +49,7 @@ Your app is ready to be deployed!
 #### Tools and Packages
 
 1. [Ant Design](https://ant.design/)
-2. [Redux](https://redux.js.org/)
+2. [Redux Toolkit](https://redux-toolkit.js.org/)
 3. [Redux Saga](https://redux-saga.js.org/)
 4. [Axios](https://axios-http.com/docs/intro)
 5. [React Router](https://reactrouter.com/en/main)
