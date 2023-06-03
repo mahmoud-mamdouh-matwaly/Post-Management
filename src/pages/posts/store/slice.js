@@ -7,6 +7,7 @@ const initialState = {
   postItem: null,
   currentPage: 1,
   searchTerm: '',
+  deleteStatus: 'idle',
 };
 
 const postsSlice = createSlice({
@@ -65,11 +66,15 @@ const postsSlice = createSlice({
       return state;
     },
     deletePostItemSuccess: (state, action) => {
+      state.deleteStatus = 'success';
       state.data = state.data?.filter(post => post.id !== action.payload);
       state.isLoading = false;
     },
     deletePostItemFailed: state => {
       state.isLoading = false;
+    },
+    resetDeleteStatus: state => {
+      state.deleteStatus = 'idle';
     },
   },
 });
@@ -93,6 +98,7 @@ export const {
   deletePostItem,
   deletePostItemSuccess,
   deletePostItemFailed,
+  resetDeleteStatus,
 } = actions;
 
 export default reducer;
