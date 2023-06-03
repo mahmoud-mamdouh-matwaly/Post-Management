@@ -28,18 +28,22 @@ const BaseModal = props => {
       okText={okText}
       confirmLoading={isLoading}
       maskClosable={false}
-      footer={[
-        <BaseButton key="back" type="default" bg={token.colorLight} onClick={handleCancel} text="Cancel" />,
-        <BaseButton
-          key="submit"
-          type="primary"
-          text={okText}
-          danger={danger}
-          loading={isLoading}
-          onClick={handleSubmit}
-          isDisabled={isDisabled}
-        />,
-      ]}
+      footer={
+        okText
+          ? [
+              <BaseButton key="back" type="default" bg={token.colorLight} onClick={handleCancel} text="Cancel" />,
+              <BaseButton
+                key="submit"
+                type="primary"
+                text={okText}
+                danger={danger}
+                loading={isLoading}
+                onClick={handleSubmit}
+                isDisabled={isDisabled}
+              />,
+            ]
+          : null
+      }
       {...rest}
     >
       {children}
