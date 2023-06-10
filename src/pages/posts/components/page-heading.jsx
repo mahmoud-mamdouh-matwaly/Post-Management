@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const { Title } = Typography;
 
 const PageHeading = props => {
-  const { handleChangeSearch = () => {}, title, hasBack = false, hasSearch = false } = props;
+  const { handleChangeSearch = () => {}, title, hasBack = false, hasSearch = false, testId } = props;
   const navigate = useNavigate();
 
   return (
@@ -16,7 +16,7 @@ const PageHeading = props => {
         <Space>
           {hasBack ? <ArrowLeftOutlined onClick={() => navigate(-1)} /> : null}
 
-          <Title level={4} style={{ marginBlockEnd: 0, marginInlineStart: 10 }}>
+          <Title level={4} style={{ marginBlockEnd: 0, marginInlineStart: 10 }} data-testid={testId}>
             {title}
           </Title>
         </Space>
@@ -37,4 +37,5 @@ PageHeading.propTypes = {
   title: PropTypes.string,
   hasBack: PropTypes.bool,
   hasSearch: PropTypes.bool,
+  testId: PropTypes.string,
 };

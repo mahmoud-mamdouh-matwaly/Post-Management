@@ -13,7 +13,7 @@ export function* showAlert({ type, message }) {
 }
 
 export function* showError(error, customMessage) {
-  const type = isNetworkError(error) ? 'networkError' : 'error';
+  const type = isNetworkError(error) ? 'network error' : 'error';
   let message = isNetworkError(error)
     ? "You don't seem to be connected to the internet, please check your connection and try again"
     : customMessage || error?.message;

@@ -20,7 +20,7 @@ const PostDetails = () => {
 
   const { postItem, isLoading } = useSelector(state => state.postsReducer);
   const {
-    alert: { type },
+    alert: { type, message },
   } = useSelector(state => state.uiReducer);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const PostDetails = () => {
   }, [postItem]);
 
   useEffect(() => {
-    if (type === 'success') {
+    if (type.includes('success')) {
       navigate(-1);
     }
   }, [type]);
@@ -54,7 +54,7 @@ const PostDetails = () => {
       <Suspense fallback={<Spin />}>
         <Form postItem={postItem} handleSubmit={handleSubmit} />
       </Suspense>
-      {type ? <BaseMessage /> : null}
+      {type.includes('error') ? <BaseMessage type={type} message={message} /> : null}
     </Space>
   );
 };
