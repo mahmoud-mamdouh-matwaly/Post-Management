@@ -15,7 +15,6 @@ describe('Posts Page', () => {
   describe('Check posts page is render', () => {
     it('check page heading is render with action buttons', () => {
       assertions.assertElementIsVisible(selectors?.pageTitle);
-
       assertions.assertElementTextContains(selectors?.pageTitle, 'Posts');
     });
 
