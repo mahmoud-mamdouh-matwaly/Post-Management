@@ -5,7 +5,7 @@ export const columns = [
     key: 'title',
   },
   {
-    title: 'Descriptions',
+    title: 'Description',
     dataIndex: 'body',
     key: 'body',
   },

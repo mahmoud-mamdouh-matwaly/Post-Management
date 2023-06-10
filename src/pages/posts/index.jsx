@@ -29,7 +29,7 @@ const PostsPage = () => {
   const navigate = useNavigate();
   const { data, isLoading, currentPage, searchTerm, deleteStatus } = useSelector(state => state.postsReducer);
   const {
-    alert: { type },
+    alert: { type, message },
   } = useSelector(state => state.uiReducer);
   const dispatch = useDispatch();
 
@@ -63,7 +63,7 @@ const PostsPage = () => {
   }, []);
   const memoColumns = useMemo(() => {
     const columnActions = {
-      title: 'Action',
+      title: 'Actions',
       key: 'operation',
       fixed: 'right',
       width: 150,
@@ -113,7 +113,7 @@ const PostsPage = () => {
   };
 
   useEffect(() => {
-    if (deleteStatus === 'success') {
+    if (deleteStatus.includes('success')) {
       handleCancel();
       dispatch(resetDeleteStatus());
     }
@@ -124,9 +124,9 @@ const PostsPage = () => {
   }, [searchTerm, data]);
 
   return (
-    <Space direction="vertical" style={{ background: colorBgContainer, width: '100%' }}>
-      <PageHeading title="Posts" hasSearch={true} handleChangeSearch={handleChangeSearch} />
-      <Suspense fallback={<Spin />}>
+    <Space direction="vertical" style={{ background: colorBgContainer, width: '100%' }} data-testid={'postsPage'}>
+      <PageHeading title="Posts" hasSearch={true} handleChangeSearch={handleChangeSearch} testId="pageTitle" />
+      <Suspense fallback={<Spin data-testid={'loading'} />}>
         <BaseTable
           data={filteredPosts}
           columns={memoColumns}
@@ -136,7 +136,6 @@ const PostsPage = () => {
           rowKey="id"
         />
       </Suspense>
-      {type ? <BaseMessage /> : null}
 
       <ModalsContainer
         handleCancel={handleCancel}
@@ -145,6 +144,8 @@ const PostsPage = () => {
         isLoading={isLoading}
         danger={true}
       />
+
+      {type ? <BaseMessage type={type} message={message} /> : null}
     </Space>
   );
 };

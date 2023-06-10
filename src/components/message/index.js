@@ -1,22 +1,19 @@
 import React, { useEffect } from 'react';
 import { message } from 'antd';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const BaseMessage = () => {
-  const {
-    alert: { type, message: text },
-  } = useSelector(state => state.uiReducer);
-
+const BaseMessage = props => {
+  const { message: text, type } = props;
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    if (type === 'error' || type === 'networkError') {
+    if (type.includes('error')) {
       messageApi.open({
         type: 'error',
         content: text,
       });
     }
-    if (type === 'success') {
+    if (type.includes('success')) {
       messageApi.open({
         type: 'success',
         content: text,
@@ -28,3 +25,8 @@ const BaseMessage = () => {
 };
 
 export default BaseMessage;
+
+BaseMessage.propTypes = {
+  type: PropTypes.string,
+  message: PropTypes.string,
+};
