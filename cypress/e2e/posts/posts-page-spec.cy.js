@@ -69,7 +69,7 @@ describe('Posts Page', () => {
           actions.clickSpecificElement(selectors.viewBtn, 0);
           assertions.assertElementIsVisible(selectors?.viewModal);
         });
- 
+
         describe('Check view modal is have data and close it', () => {
           it('check all label is render with correct label name', () => {
             const labelNames = [];

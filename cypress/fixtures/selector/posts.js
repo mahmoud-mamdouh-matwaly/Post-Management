@@ -11,7 +11,7 @@ import {
   assertShouldHaveValue,
   className,
   assertElementExists,
-  assertNotVisible
+  assertNotVisible,
 } from '../../utils/cypress-helpers';
 
 const postsPage = Object.freeze({
@@ -22,12 +22,12 @@ const postsPage = Object.freeze({
     viewBtn: testId('viewBtn'),
     editBtn: testId('editBtn'),
     deleteBtn: testId('deleteBtn'),
-    viewModal:  testId('viewModal'),
-    deleteModal:  testId('deleteModal'),
-    postForm:  testId('postForm'),
+    viewModal: testId('viewModal'),
+    deleteModal: testId('deleteModal'),
+    postForm: testId('postForm'),
     closeIconModal: className('ant-modal-close'),
     titleInput: testId('title'),
-    descriptionTextarea:  testId('body'),
+    descriptionTextarea: testId('body'),
   },
   actions: {
     clickAction: selectors => click(selectors),

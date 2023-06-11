@@ -17,5 +17,4 @@ export default {
       if (elementIndex === index) cy.wrap(element).click();
     }),
   assertShouldHaveValue: (selector, value) => cy.get(selector).should('have.value', value),
-
 };

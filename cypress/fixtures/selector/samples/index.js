@@ -17,5 +17,4 @@ export const HEAD_POSTS_COLUMNS_LIST = ['Title', 'Description', 'Actions'];
 
 export const ROW_VALUES_LIST = ['new post', 'new Description', ''];
 
-
 export const LIST_OF_LABEL_NAME = ['Title', 'Description'];
