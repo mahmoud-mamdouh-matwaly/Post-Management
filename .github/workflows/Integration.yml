@@ -39,9 +39,9 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          build: yarn run build
           start: yarn start
           browser: chrome
+          wait-on: 'http://localhost:3000'
 
       - name: Save Yarn cache
         uses: actions/cache@v3
