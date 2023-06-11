@@ -41,7 +41,7 @@ jobs:
         with:
           start: yarn start
           browser: chrome
-          wait-on: '::1:3000'
+          wait-on: 'http://[::1]:3000'
 
       - name: Save Yarn cache
         uses: actions/cache@v3
