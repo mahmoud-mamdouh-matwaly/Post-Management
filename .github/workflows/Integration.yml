@@ -36,14 +36,18 @@ jobs:
       - name: Linting
         run: yarn run lint:check
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v3
-        with:
-          start: npm start
-          command: yarn run cypress:run
-
       - name: Save Yarn cache
         uses: actions/cache@v3
         with:
             path: ~/.cache/yarn
-            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}  
+            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }} 
+
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          build: yarn run build
+          start: yarn start
+          browser: chrome

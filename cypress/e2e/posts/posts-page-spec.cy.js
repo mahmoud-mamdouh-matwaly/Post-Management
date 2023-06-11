@@ -13,7 +13,7 @@ describe('Posts Page', () => {
     cy.visit('/posts-management');
   });
   describe('Check posts page is render', () => {
-    it('check page heading is render with action buttons', () => {
+    it('check page heading is render', () => {
       assertions.assertElementIsVisible(selectors?.pageTitle);
       assertions.assertElementTextContains(selectors?.pageTitle, 'Posts');
     });
