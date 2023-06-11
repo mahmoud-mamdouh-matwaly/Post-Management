@@ -39,9 +39,10 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          start: yarn start
+          start: yarn start-after-120-seconds
           browser: chrome
-          wait-on: 'http://[::1]:3000'
+          wait-on: 'http://127.0.0.1:3000'
+          wait-on-timeout: 130
 
       - name: Save Yarn cache
         uses: actions/cache@v3
