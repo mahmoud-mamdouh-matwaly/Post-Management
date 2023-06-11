@@ -38,7 +38,14 @@ const PostForm = props => {
   }, []);
 
   return (
-    <Form form={form} name="form" layout={'vertical'} onFinish={onFinish} onFieldsChange={onFieldsChange}>
+    <Form
+      form={form}
+      name="form"
+      layout={'vertical'}
+      onFinish={onFinish}
+      onFieldsChange={onFieldsChange}
+      data-testid="postForm"
+    >
       <Space.Compact direction={isView ? 'vertical' : 'horizontal'} block>
         <Col flex={'0 1 100%'} style={{ marginInline: 5 }}>
           <BaseInput placeholder="title" name="title" label="Title" message="Title is required" disabled={isView} />
@@ -46,15 +53,15 @@ const PostForm = props => {
         <Col flex={'0 1 100%'} style={{ marginInline: 5 }}>
           <Form.Item
             name="body"
-            label="Descriptions"
+            label="Description"
             rules={[
               {
                 required: true,
-                message: 'Descriptions is required',
+                message: 'Description is required',
               },
             ]}
           >
-            <TextArea rows={4} disabled={isView} />
+            <TextArea rows={4} disabled={isView} name="body" data-testid="body" />
           </Form.Item>
         </Col>
       </Space.Compact>

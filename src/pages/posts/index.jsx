@@ -1,4 +1,4 @@
-import { useEffect, Suspense, lazy, useCallback, useMemo, useState } from 'react';
+import { useEffect, Suspense, lazy, useCallback, useMemo, useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DeleteFilled, EditFilled, EyeFilled } from '@ant-design/icons';
@@ -36,7 +36,21 @@ const PostsPage = () => {
   const {
     token: { colorBgContainer },
   } = useToken();
+
   const [showModal, setShowModal] = useState({ isOpen: false, id: null, item: null });
+
+  useEffect(() => {
+    if (!data?.length) {
+      dispatch(fetchPosts());
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (deleteStatus.includes('success')) {
+      handleCancel();
+      dispatch(resetDeleteStatus());
+    }
+  }, [deleteStatus]);
 
   const handleClickEdit = useCallback(item => {
     dispatch(setPostItem(item));
@@ -61,30 +75,6 @@ const PostsPage = () => {
       };
     });
   }, []);
-  const memoColumns = useMemo(() => {
-    const columnActions = {
-      title: 'Actions',
-      key: 'operation',
-      fixed: 'right',
-      width: 150,
-      render: row => {
-        return (
-          <Row justify={'space-between'}>
-            <BaseButton className="btn" type="text" icon={<EyeFilled />} onClick={() => handleClickView(row)} />
-            <BaseButton className="btn" type="text" icon={<EditFilled />} onClick={() => handleClickEdit(row)} />
-            <BaseButton className="btn" type="text" icon={<DeleteFilled />} danger onClick={() => handleDelete(row)} />
-          </Row>
-        );
-      },
-    };
-    return [...columns, { ...columnActions }];
-  }, []);
-
-  useEffect(() => {
-    if (!data?.length) {
-      dispatch(fetchPosts());
-    }
-  }, [data]);
 
   const handleCurrentPage = useCallback(
     current => {
@@ -112,28 +102,22 @@ const PostsPage = () => {
     });
   };
 
-  useEffect(() => {
-    if (deleteStatus.includes('success')) {
-      handleCancel();
-      dispatch(resetDeleteStatus());
-    }
-  }, [deleteStatus]);
-
   const filteredPosts = useMemo(() => {
     return data.filter(post => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [searchTerm, data]);
 
   return (
-    <Space direction="vertical" style={{ background: colorBgContainer, width: '100%' }} data-testid={'postsPage'}>
+    <Space direction="vertical" style={{ background: colorBgContainer, width: '100%' }} data-testid="postsPage">
       <PageHeading title="Posts" hasSearch={true} handleChangeSearch={handleChangeSearch} testId="pageTitle" />
-      <Suspense fallback={<Spin data-testid={'loading'} />}>
-        <BaseTable
-          data={filteredPosts}
-          columns={memoColumns}
-          loading={isLoading}
-          getCurrentPage={handleCurrentPage}
+      <Suspense fallback={<Spin />}>
+        <PostList
+          filteredPosts={filteredPosts}
+          isLoading={isLoading}
+          handleCurrentPage={handleCurrentPage}
           currentPage={currentPage}
-          rowKey="id"
+          handleClickView={handleClickView}
+          handleClickEdit={handleClickEdit}
+          handleDelete={handleDelete}
         />
       </Suspense>
 
@@ -164,6 +148,7 @@ function ModalsContainer(props) {
         okText="Delete"
         isLoading={isLoading}
         danger={true}
+        testId="deleteModal"
       >
         <Text>Are you sure, you want to delete this post?</Text>
       </BaseModal>
@@ -173,6 +158,7 @@ function ModalsContainer(props) {
         handleSubmit={handleSubmit}
         isModalOpen={showModal.isOpen && !!showModal.item}
         isLoading={isLoading}
+        testId="viewModal"
       >
         <Form postItem={showModal?.item} isView={true} />
       </BaseModal>
@@ -189,4 +175,68 @@ ModalsContainer.propTypes = {
     id: PropTypes.number,
   }),
   isLoading: PropTypes.bool,
+};
+
+const PostList = memo(props => {
+  const { filteredPosts, handleClickView, handleClickEdit, handleDelete, isLoading, handleCurrentPage, currentPage } =
+    props;
+
+  const memoColumns = useMemo(() => {
+    const columnActions = {
+      title: 'Actions',
+      key: 'operation',
+      fixed: 'right',
+      width: 150,
+      render: row => {
+        return (
+          <Row justify={'space-between'}>
+            <BaseButton
+              className="btn"
+              type="text"
+              icon={<EyeFilled />}
+              onClick={() => handleClickView(row)}
+              testId="viewBtn"
+            />
+            <BaseButton
+              className="btn"
+              type="text"
+              icon={<EditFilled />}
+              onClick={() => handleClickEdit(row)}
+              testId="editBtn"
+            />
+            <BaseButton
+              className="btn"
+              type="text"
+              icon={<DeleteFilled />}
+              danger
+              onClick={() => handleDelete(row)}
+              testId="deleteBtn"
+            />
+          </Row>
+        );
+      },
+    };
+    return [...columns, { ...columnActions }];
+  }, []);
+
+  return (
+    <BaseTable
+      data={filteredPosts}
+      columns={memoColumns}
+      loading={isLoading}
+      getCurrentPage={handleCurrentPage}
+      currentPage={currentPage}
+      rowKey="id"
+    />
+  );
+});
+
+PostList.propTypes = {
+  handleClickEdit: PropTypes.func,
+  handleDelete: PropTypes.func,
+  handleClickView: PropTypes.func,
+  filteredPosts: PropTypes.array,
+  isLoading: PropTypes.bool,
+  currentPage: PropTypes.number,
+  handleCurrentPage: PropTypes.func,
 };

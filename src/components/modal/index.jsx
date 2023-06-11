@@ -15,6 +15,7 @@ const BaseModal = props => {
     okText,
     danger = false,
     isDisabled = false,
+    testId,
     ...rest
   } = props;
   const { token } = useToken();
@@ -28,10 +29,18 @@ const BaseModal = props => {
       okText={okText}
       confirmLoading={isLoading}
       maskClosable={false}
+      data-testid={testId}
       footer={
         okText
           ? [
-              <BaseButton key="back" type="default" bg={token.colorLight} onClick={handleCancel} text="Cancel" />,
+              <BaseButton
+                key="back"
+                type="default"
+                bg={token.colorLight}
+                onClick={handleCancel}
+                text="Cancel"
+                testId="cancelBtn"
+              />,
               <BaseButton
                 key="submit"
                 type="primary"
@@ -40,6 +49,7 @@ const BaseModal = props => {
                 loading={isLoading}
                 onClick={handleSubmit}
                 isDisabled={isDisabled}
+                testId="submitBtn"
               />,
             ]
           : null
@@ -63,4 +73,5 @@ BaseModal.propTypes = {
   okText: PropTypes.string,
   danger: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  testId: PropTypes.string,
 };
