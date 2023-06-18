@@ -39,7 +39,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          start: yarn start-after-120-seconds
+          start: yarn start
           browser: chrome
           wait-on: 'npx wait-on --timeout 60000 http://localhost:3000'
 
