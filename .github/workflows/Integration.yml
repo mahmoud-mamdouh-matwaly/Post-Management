@@ -41,8 +41,7 @@ jobs:
         with:
           start: yarn start-after-120-seconds
           browser: chrome
-          wait-on: 'http://127.0.0.1:3000'
-          wait-on-timeout: 130
+          wait-on: 'npx wait-on --timeout 60000 http://localhost:3000'
 
       - name: Save Yarn cache
         uses: actions/cache@v3
