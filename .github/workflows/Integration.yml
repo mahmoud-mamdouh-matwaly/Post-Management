@@ -42,7 +42,9 @@ jobs:
           start: |
             yarn start 
             yarn cypress:run
-  
+          browser: chrome
+          wait-on: 'npx wait-on --timeout 60000 http://::1:3000/posts-management'
+
       - name: Save Yarn cache
         uses: actions/cache@v3
         with:
